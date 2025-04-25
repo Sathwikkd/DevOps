@@ -1,0 +1,65 @@
+Thanks for the update! You're **almost there** — your **disk (`/dev/sda`) is now 16G**, but your **root partition (`/dev/sda1`) is still only 9.9G**, which is why you’re getting the **“no space left on device”** error.
+
+Let’s **expand the root partition** (`sda1`) and **resize the filesystem** so it can use the full 16 GB disk.
+
+---
+
+## ✅ Final Steps to Fix the Disk Space Error
+
+### 🔧 Step 1: Grow the Partition to Use Full Disk
+
+Run this command to grow the root partition:
+
+```bash
+sudo growpart /dev/sda 1
+```
+
+If it succeeds, you'll see something like:
+
+```
+CHANGED: partition=1 start=2048 old: size=..., new: size=...
+```
+
+---
+
+### 🛠 Step 2: Resize the Filesystem
+
+Now resize the filesystem on `/dev/sda1`:
+
+```bash
+sudo resize2fs /dev/sda1
+```
+
+> ✅ This will allow the partition to use all available space on disk.
+
+---
+
+### 📊 Step 3: Verify the Resize
+
+```bash
+df -h
+```
+
+You should now see something like:
+
+```
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/sda1        16G   5G   11G   33% /
+```
+
+---
+
+### 📦 You can now try your Docker or installation command again
+
+Your **"no space left on device"** error should be gone.
+
+---
+
+If you're still stuck, just copy-paste the output of these commands:
+
+```bash
+lsblk
+df -h
+```
+
+And I’ll pinpoint what’s missing. Want me to script this entire resize process for reuse on other VMs?
